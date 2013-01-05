@@ -6,6 +6,10 @@ class PythonContext {
 public:
   PythonContext () {
     Py_Initialize();
+    if(! Py_IsInitialized() ) {
+      PyErr_Print();
+      exit(-1);
+    }
   }
 
   void add_to_path(std::string newpath) {
