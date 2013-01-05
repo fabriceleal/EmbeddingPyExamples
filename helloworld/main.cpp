@@ -2,22 +2,23 @@
 #include <iostream>
 #include <string>
 
+#define FAIL_IF(cond, message)			\
+  if(cond) {					\
+    PyErr_Print();				\
+    std::cerr << (message) << std::endl;	\
+    exit(-1);					\
+  }
+
 class PythonContext {
 public:
   PythonContext () {
     Py_Initialize();
-    if(! Py_IsInitialized() ) {
-      PyErr_Print();
-      exit(-1);
-    }
+    FAIL_IF((!Py_IsInitialized()), "Couldn't init python");
   }
 
   void add_to_path(std::string newpath) {
     PyObject* sysPath = PySys_GetObject((char*) "path");
-    if(!sysPath) {
-      PyErr_Print();
-      exit(-1);
-    }
+    FAIL_IF((!sysPath), "Couldn't create sysPath");
     PyObject* curDir = this->str(newpath);
     PyList_Append(sysPath, curDir);
     this->free(curDir);
@@ -25,50 +26,30 @@ public:
   }
 
   PyObject* import(std::string modulename) {
-    std::clog << "module name to python str ... " << std::endl;
     PyObject* _name = this->str(modulename);
-    //std::clog << _name << std::endl;
-
-    std::clog << "actually importing module ... " << std::endl;
     PyObject* ret = PyImport_Import(_name);
-    if(!ret) {
-      PyErr_Print();
-      exit(-1);
-    }
-
-    std::clog << "free module name ..." << std::endl;
+    FAIL_IF((!ret), "Couldn't import");
     this->free(_name);
-
-    std::clog << "return ..." << std::endl;
     return ret;
   }
 
   PyObject* get(PyObject* &module, std::string name) {
     PyObject* ret = PyObject_GetAttrString(module, name.c_str());
-    if(!ret) {
-      PyErr_Print();
-      exit(-1);
-    }
+    FAIL_IF((!ret), "Couldn't get stuff");
     return ret;
   }
 
   PyObject* str(std::string s) {
-    PyObject* ret = NULL; 
+    PyObject* ret = NULL;
     ret = PyString_FromString(s.c_str());
-    if(!ret) {
-      PyErr_Print();
-      exit(-1);
-    }
+    FAIL_IF((!ret), "Couldn't make string");
     return ret;
   } 
 
   PyObject* str(char* s) {
     PyObject* ret = NULL; 
     ret = PyString_FromString(s);
-    if(!ret) {
-      PyErr_Print();
-      exit(-1);
-    }
+    FAIL_IF((!ret), "Couldn't make string");
     return ret;
   }
 
@@ -80,6 +61,7 @@ public:
     Py_Finalize();
   }
 };
+
 
 int main(int argc, char** argv)
 {
