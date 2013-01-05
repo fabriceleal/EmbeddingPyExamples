@@ -7,9 +7,11 @@ Examples of embedding python in a c++ application.
 
 `common` some helper functions
 
-`helloworld/` from http://realmike.org/blog/2012/07/08/embedding-python-tutorial-part-1/
+`helloworld/` from http://realmike.org/blog/2012/07/08/embedding-python-tutorial-part-1/, calling python sub from c++
 
-`classes` from https://www6.software.ibm.com/developerworks/education/l-pythonscript/l-pythonscript-ltr.pdf
+`classes` from https://www6.software.ibm.com/developerworks/education/l-pythonscript/l-pythonscript-ltr.pdf, example using instances
+
+`duplex` from http://realmike.org/blog/2012/07/05/supercharging-c-code-with-embedded-python/, calling python function from c++, which calls c++ function
 
 ### Check also
 
