@@ -18,6 +18,8 @@ Examples of embedding python in a c++ application.
 http://www.codeproject.com/Articles/11805/Embedding-Python-in-C-C-Part-I
 http://www.linuxjournal.com/article/8497?page=0,0
 
+Official stuff: http://docs.python.org/2/extending/index.html
+
 ### Remarks
 Tested with ubuntu, g++
 
